@@ -14,19 +14,29 @@ import (
 type Grid struct {
 	Width   int
 	Height  int
-	Padding int
+	Padding int // 照片周边留白
+	Gap     int // 图片间隙
 }
 
 func (g *Grid) getPadding() int {
 	if g.Padding > 0 {
 		return g.Padding
 	}
-	return 20
+	return 10
+}
+
+func (g *Grid) getGap() int {
+	if g.Gap > 0 {
+		return g.Gap
+	}
+	return 5
 }
 
 func (g *Grid) getWH(sw int, sh int) (int, int) {
-	num1 := g.Width / sw * g.Height / sh
-	num2 := g.Height / sw * g.Width / sh
+	w := g.Width - 2*g.getPadding()
+	h := g.Height - 2*g.getPadding()
+	num1 := w / sw * h / sh
+	num2 := h / sw * w / sh
 	if num1 >= num2 {
 		return g.Width, g.Height
 	}
@@ -34,16 +44,16 @@ func (g *Grid) getWH(sw int, sh int) (int, int) {
 }
 
 func (g *Grid) Draw(sc image.Image) ([]byte, error) {
-	avatarWidth := sc.Bounds().Dx() + g.getPadding()
-	avatarHeight := sc.Bounds().Dy() + g.getPadding()
+	avatarWidth := sc.Bounds().Dx() + g.getGap()
+	avatarHeight := sc.Bounds().Dy() + g.getGap()
 
 	width, height := g.getWH(avatarWidth, avatarHeight)
 
 	im := image.NewRGBA(image.Rect(0, 0, width, height))
 	draw.Draw(im, im.Bounds(), image.White, image.Point{}, draw.Src)
 
-	startX := (width - (width/avatarWidth)*avatarWidth) / 2
-	startY := (height - (height/avatarHeight)*avatarHeight) / 2
+	startX := (width-(width/avatarWidth)*avatarWidth)/2 + g.getPadding()
+	startY := (height-(height/avatarHeight)*avatarHeight)/2 + g.getPadding()
 
 	for y := startY; y < height; y += avatarHeight {
 		for x := startX; x < width; x += avatarWidth {
