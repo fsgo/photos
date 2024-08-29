@@ -20,8 +20,8 @@ var avatarPath = flag.String("in", "", "avatar image path")
 var avatarSize = flag.String("is", layout.Avatar1IN, "avatar size, allow:\n"+strings.Join(layout.Avatar.NameDescs(), "\n")+"\n")
 var outFilePath = flag.String("out", "./out.png", "output image path")
 var outSize = flag.String("os", layout.Canvas6IN4R, "canvas size, allow:\n"+strings.Join(layout.Canvas.NameDescs(), "\n")+"\n")
-var padding = flag.Int("p", 10, "padding size")
-var gap = flag.Int("g", 5, "avatar gap size")
+var padding = flag.Int("p", 20, "padding size")
+var gap = flag.Int("g", 20, "avatar gap size")
 
 func main() {
 	flag.Parse()
