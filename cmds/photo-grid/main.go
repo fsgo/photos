@@ -22,6 +22,7 @@ var outFilePath = flag.String("out", "./out.png", "output image path")
 var outSize = flag.String("os", layout.Canvas6IN4R, "canvas size, allow:\n"+strings.Join(layout.Canvas.NameDescs(), "\n")+"\n")
 var padding = flag.Int("p", 20, "padding size")
 var gap = flag.Int("g", 20, "avatar gap size")
+var border = flag.Bool("b", false, "border")
 
 func main() {
 	flag.Parse()
@@ -35,7 +36,9 @@ func main() {
 
 	as := layout.Avatar.MustFind(*avatarSize)
 	sc := imaging.Resize(avatar, as.Width, as.Height, imaging.Lanczos)
-
+	if *border {
+		layout.DrawBorder(sc)
+	}
 	cs := layout.Canvas.MustFind(*outSize)
 	ly := &layout.Grid{
 		Width:   cs.Width,
