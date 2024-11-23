@@ -33,7 +33,7 @@ func doClear(fp string) {
 		log.Fatalln("load image failed:", err)
 	}
 
-	aim := ximage.ToGray(inputImg)
+	aim := ximage.ToGrayImage(inputImg)
 
 	outImg := image.NewGray(aim.Bounds())
 	for y := inputImg.Bounds().Min.Y; y < inputImg.Bounds().Max.Y; y++ {
